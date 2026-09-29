@@ -1,5 +1,7 @@
 # dsh-mcp-servers — MCP servers settings page
 
+[![npm](https://img.shields.io/npm/v/@railgun52/dsh-mcp-servers?style=flat-square)](https://www.npmjs.com/package/@railgun52/dsh-mcp-servers)
+
 English | [中文](README.zh.md)
 
 > A profile-config settings page for DeepSeek Harness that lets you manage MCP servers from the Web UI and mounts live `mcp-client` instances from the saved list.
@@ -43,7 +45,7 @@ dsh-mcp-servers/
 ### From a local directory (development)
 dsh plugin --profile web add link:/absolute/path/to/dsh-mcp-servers
 
-### From npm (once published)
+### From npm (recommended)
 dsh plugin --profile web add @railgun52/dsh-mcp-servers@latest
 ```
 

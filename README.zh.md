@@ -1,5 +1,7 @@
 # dsh-mcp-servers — MCP 服务器设置页
 
+[![npm](https://img.shields.io/npm/v/@railgun52/dsh-mcp-servers?style=flat-square)](https://www.npmjs.com/package/@railgun52/dsh-mcp-servers)
+
 [English](README.md) | 中文
 
 > DeepSeek Harness 的 profile-config 设置页，在 Web UI 里管理 MCP 服务器，并把保存的服务器列表挂成实时运行的 `mcp-client` 实例。
@@ -43,7 +45,7 @@ dsh-mcp-servers/
 ### 从本地目录（开发）
 dsh plugin --profile web add link:/absolute/path/to/dsh-mcp-servers
 
-### 从 npm（发布后）
+### 从 npm（推荐）
 dsh plugin --profile web add @railgun52/dsh-mcp-servers@latest
 ```
 
