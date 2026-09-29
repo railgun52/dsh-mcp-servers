@@ -1,0 +1,143 @@
+.section {
+  padding: 24px;
+  max-width: 800px;
+}
+.header {
+  margin-bottom: 24px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.intro {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 14px;
+}
+.toolbar {
+  margin-bottom: 16px;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-3);
+  transition: box-shadow 0.15s;
+}
+.card:hover {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.cardBody {
+  flex: 1;
+  min-width: 0;
+}
+.cardName {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cardMeta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cardMeta code {
+  font-size: 12px;
+}
+.cardActions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.statusOn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
+}
+.statusOff {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #888;
+  display: inline-block;
+}
+.deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+.deleteBtn:hover {
+  background: var(--bg-hover);
+  color: var(--text-error);
+}
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+.error {
+  padding: 8px 12px;
+  background: var(--bg-error);
+  color: var(--text-error);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+.modalBody {
+  padding: 0;
+}
+.modalBody p {
+  padding: 0 16px;
+}
+.modalActions {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  justify-content: flex-end;
+}
+.jsonEditor {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  min-height: 300px;
+  outline: none;
+}
+.jsonEditor:focus {
+  background: var(--bg-input-focus);
+}
+.dialogMcp {
+  width: min(720px, 100%);
+}

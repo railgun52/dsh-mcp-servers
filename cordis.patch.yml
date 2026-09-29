@@ -1,0 +1,3 @@
+- insert:
+    - id: mcp-servers
+      name: '@railgun52/dsh-mcp-servers'
