@@ -1,7 +1,7 @@
 {
   "name": "@railgun52/dsh-mcp-servers",
   "description": "MCP servers settings page for the dsh web GUI: a JSON editor over a profile-config namespace that mounts live mcp-client instances from the saved servers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

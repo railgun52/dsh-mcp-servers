@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Button, IconPlusOutlineRegular, IconTrashOutlineRegular, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconEditOutlineRegular, IconPlusOutlineRegular, IconTrashOutlineRegular, Modal, Switch } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { McpKey } from './locales.ts'
 import styles from './McpSection.module.css'
 
@@ -29,6 +29,7 @@ function serversToJson(servers: McpServer[]): string {
     if (Object.keys(s.env).length > 0) entry.env = s.env
     if (s.transport === 'streamable-http') entry.transport = 'streamable-http'
     if (s.url) entry.url = s.url
+    if (!s.enabled) entry.enabled = false
     mcpServers[s.name] = entry
   }
   return JSON.stringify({ mcpServers }, null, 2)
@@ -143,6 +144,11 @@ export function McpSection({ load, save, t: t_ }: McpSectionProps) {
     }
   }
 
+  const handleToggle = async (index: number, enabled: boolean) => {
+    const newServers = servers.map((s, i) => (i === index ? { ...s, enabled } : s))
+    await saveConfig(newServers)
+  }
+
   const handleDelete = async (index: number) => {
     const newServers = servers.filter((_, i) => i !== index)
     await saveConfig(newServers)
@@ -185,7 +191,22 @@ export function McpSection({ load, save, t: t_ }: McpSectionProps) {
               </div>
             </div>
             <div className={styles.cardActions}>
-              <Button onClick={() => handleEdit(i)}>{t('edit')}</Button>
+              <Switch
+                checked={server.enabled}
+                onChange={enabled => handleToggle(i, enabled)}
+                label={`${server.name} ${server.enabled ? t('enabled') : t('disabled')}`}
+                title={server.enabled ? t('enabled') : t('disabled')}
+                className={styles.enableSwitch}
+                disabled={saving}
+              />
+              <button
+                className={styles.iconBtn}
+                title={t('edit')}
+                aria-label={t('edit')}
+                onClick={() => handleEdit(i)}
+              >
+                <IconEditOutlineRegular />
+              </button>
               <button className={styles.deleteBtn} onClick={() => setDeleteTarget({ name: server.name, index: i })}>
                 <IconTrashOutlineRegular />
               </button>

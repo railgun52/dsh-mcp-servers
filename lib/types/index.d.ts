@@ -11,7 +11,7 @@ export { MCP_SERVERS_NAMESPACE, McpServersSchema } from './mcp-servers-schema.ts
 export type { McpServerConfig, McpServersSettings } from './mcp-servers-schema.ts';
 /** Services required: the mcp-client instances this plugin mounts inject the tool registry. */
 export declare const inject: string[];
-/** Config schema; the owning profile entry's id must equal {@link MCP_SERVERS_NAMESPACE}. */
+/** Config schema; the owning profile entry's id must equal `mcp-servers`. */
 export declare const Config: import("@deepseek-ai/schemastery").default<Schemastery.ObjectS<NoInfer<{
     servers: import("@deepseek-ai/schemastery").default<NoInfer<({
         name?: string | null;

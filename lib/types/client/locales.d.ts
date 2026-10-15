@@ -4,6 +4,8 @@ export declare const en: {
     intro: string;
     add: string;
     edit: string;
+    enabled: string;
+    disabled: string;
     remove: string;
     deleteConfirm: string;
     deleteDescription: string;
