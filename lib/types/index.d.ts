@@ -20,7 +20,9 @@ export declare const Config: import("@deepseek-ai/schemastery").default<Schemast
         env?: import("@deepseek-ai/cosmokit").Dict<string, string> | null;
         transport?: "stdio" | "streamable-http" | null;
         url?: string | null;
+        headers?: import("@deepseek-ai/cosmokit").Dict<string, string> | null;
         enabled?: boolean | null;
+        extra?: import("@deepseek-ai/cosmokit").Dict<any, string> | null;
     } & import("@deepseek-ai/cosmokit").Dict)[]>, NoInfer<Schemastery.ObjectT<NoInfer<{
         name: import("@deepseek-ai/schemastery").default<string, string, "defined">;
         command: import("@deepseek-ai/schemastery").default<string, string, "plain">;
@@ -28,7 +30,9 @@ export declare const Config: import("@deepseek-ai/schemastery").default<Schemast
         env: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<string, string>, import("@deepseek-ai/cosmokit").Dict<string, string>, "defined">;
         transport: import("@deepseek-ai/schemastery").default<"stdio" | "streamable-http", "stdio" | "streamable-http", "defined">;
         url: import("@deepseek-ai/schemastery").default<string, string, "defined">;
+        headers: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<string, string>, import("@deepseek-ai/cosmokit").Dict<string, string>, "defined">;
         enabled: import("@deepseek-ai/schemastery").default<boolean, boolean, "defined">;
+        extra: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<any, string>, import("@deepseek-ai/cosmokit").Dict<any, string>, "defined">;
     }>>[]>, "volatile-defined">;
 }>>, Schemastery.ObjectT<NoInfer<{
     servers: import("@deepseek-ai/schemastery").default<NoInfer<({
@@ -38,7 +42,9 @@ export declare const Config: import("@deepseek-ai/schemastery").default<Schemast
         env?: import("@deepseek-ai/cosmokit").Dict<string, string> | null;
         transport?: "stdio" | "streamable-http" | null;
         url?: string | null;
+        headers?: import("@deepseek-ai/cosmokit").Dict<string, string> | null;
         enabled?: boolean | null;
+        extra?: import("@deepseek-ai/cosmokit").Dict<any, string> | null;
     } & import("@deepseek-ai/cosmokit").Dict)[]>, NoInfer<Schemastery.ObjectT<NoInfer<{
         name: import("@deepseek-ai/schemastery").default<string, string, "defined">;
         command: import("@deepseek-ai/schemastery").default<string, string, "plain">;
@@ -46,7 +52,9 @@ export declare const Config: import("@deepseek-ai/schemastery").default<Schemast
         env: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<string, string>, import("@deepseek-ai/cosmokit").Dict<string, string>, "defined">;
         transport: import("@deepseek-ai/schemastery").default<"stdio" | "streamable-http", "stdio" | "streamable-http", "defined">;
         url: import("@deepseek-ai/schemastery").default<string, string, "defined">;
+        headers: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<string, string>, import("@deepseek-ai/cosmokit").Dict<string, string>, "defined">;
         enabled: import("@deepseek-ai/schemastery").default<boolean, boolean, "defined">;
+        extra: import("@deepseek-ai/schemastery").default<import("@deepseek-ai/cosmokit").Dict<any, string>, import("@deepseek-ai/cosmokit").Dict<any, string>, "defined">;
     }>>[]>, "volatile-defined">;
 }>>, "plain">;
 /**

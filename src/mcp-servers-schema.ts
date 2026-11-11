@@ -14,7 +14,14 @@ export interface McpServerConfig {
   env: Record<string, string>
   transport: 'stdio' | 'streamable-http'
   url: string
+  /** HTTP request headers, e.g. `Authorization` for a remote Streamable HTTP server. */
+  headers: Record<string, string>
   enabled: boolean
+  /**
+   * JSON keys this plugin does not model, kept verbatim so an edit round-trip
+   * through the settings page never drops a field the user wrote by hand.
+   */
+  extra: Record<string, unknown>
 }
 
 /** Durable MCP servers section shared by the Host schema and the browser scope. */
@@ -29,7 +36,9 @@ const McpServerSchema = z.object({
   env: z.dict(String).default({}),
   transport: z.union(['stdio', 'streamable-http']).default('stdio'),
   url: z.string().default(''),
+  headers: z.dict(String).default({}),
   enabled: z.boolean().default(true),
+  extra: z.dict(z.any()).default({}),
 })
 
 /**

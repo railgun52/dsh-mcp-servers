@@ -24,7 +24,7 @@ function toClientConfig(server: McpServerConfig): McpClient.Config {
       transport: 'streamable-http',
       serverName: server.name,
       url: server.url,
-      headers: {},
+      headers: { ...server.headers },
       failOnStartupError: false,
     })
   }

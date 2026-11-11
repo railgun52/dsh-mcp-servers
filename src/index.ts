@@ -34,6 +34,8 @@ export function apply(ctx: Context, config: McpServersHostConfig): void {
       ...server,
       args: [...server.args],
       env: { ...server.env },
+      headers: { ...server.headers },
+      extra: { ...server.extra },
     })),
   }))
   ctx.on('loader/volatile-update', () => {

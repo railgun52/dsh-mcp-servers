@@ -10,7 +10,9 @@ interface McpServer {
   env: Record<string, string>
   transport: 'stdio' | 'streamable-http'
   url: string
+  headers: Record<string, string>
   enabled: boolean
+  extra: Record<string, unknown>
 }
 
 export interface McpSectionInjected {
@@ -21,38 +23,88 @@ export interface McpSectionInjected {
 
 export type McpSectionProps = Partial<McpSectionInjected>
 
+/** Keys this plugin models itself; any other JSON key round-trips through `extra`. */
+const KNOWN_KEYS = new Set(['command', 'args', 'env', 'transport', 'url', 'headers', 'enabled'])
+
+/** Coerce one settings entry (possibly written by an older version) into a full record. */
+function normalizeServer(raw: Partial<McpServer>): McpServer {
+  const asStrings = (value: unknown): Record<string, string> =>
+    value !== null && typeof value === 'object'
+      ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, String(v)]))
+      : {}
+  return {
+    name: String(raw.name ?? ''),
+    command: String(raw.command ?? ''),
+    args: Array.isArray(raw.args) ? raw.args.map(String) : [],
+    env: asStrings(raw.env),
+    transport: raw.transport === 'streamable-http' ? 'streamable-http' : 'stdio',
+    url: String(raw.url ?? ''),
+    headers: asStrings(raw.headers),
+    enabled: raw.enabled !== false,
+    extra: raw.extra !== null && typeof raw.extra === 'object' ? { ...raw.extra } : {},
+  }
+}
+
 function serversToJson(servers: McpServer[]): string {
   const mcpServers: Record<string, Record<string, unknown>> = {}
   for (const s of servers) {
-    const entry: Record<string, unknown> = { command: s.command }
-    if (s.args.length > 0) entry.args = s.args
-    if (Object.keys(s.env).length > 0) entry.env = s.env
-    if (s.transport === 'streamable-http') entry.transport = 'streamable-http'
-    if (s.url) entry.url = s.url
+    // Unknown keys first, so the modelled ones below always win on a collision.
+    const entry: Record<string, unknown> = { ...s.extra }
+    if (s.transport === 'streamable-http') {
+      entry.url = s.url
+      if (Object.keys(s.headers).length > 0) entry.headers = s.headers
+    } else {
+      entry.command = s.command
+      if (s.args.length > 0) entry.args = s.args
+      if (Object.keys(s.env).length > 0) entry.env = s.env
+      // A stdio entry normally has no url, but keep one if it was written by hand.
+      if (s.url) entry.url = s.url
+    }
     if (!s.enabled) entry.enabled = false
     mcpServers[s.name] = entry
   }
   return JSON.stringify({ mcpServers }, null, 2)
 }
 
+/**
+ * Parse the editor text into server entries. An explicit `transport` always wins;
+ * otherwise a config carrying a `url` and no `command` is the standard MCP way of
+ * declaring a remote Streamable HTTP server, while everything else stays stdio so
+ * existing command-based entries keep their meaning.
+ */
 function jsonToServers(text: string): McpServer[] {
   const parsed = JSON.parse(text)
   const map = parsed.mcpServers
   if (!map || typeof map !== 'object') throw new Error('Missing "mcpServers" key')
   return Object.entries(map).map(([name, config]) => {
-    const c = config as Record<string, unknown>
-    const args = Array.isArray(c.args) ? c.args.map(String) : []
-    const env = c.env && typeof c.env === 'object'
-      ? Object.fromEntries(Object.entries(c.env).map(([k, v]) => [k, String(v)]))
-      : {}
+    const c = config !== null && typeof config === 'object' ? config as Record<string, unknown> : {}
+    const asStrings = (value: unknown): Record<string, string> =>
+      value !== null && typeof value === 'object'
+        ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, String(v)]))
+        : {}
+    const command = String(c.command ?? '')
+    const url = String(c.url ?? '')
+    const transport: McpServer['transport'] = c.transport === 'streamable-http'
+      ? 'streamable-http'
+      : c.transport === 'stdio'
+        ? 'stdio'
+        : url !== '' && command === ''
+          ? 'streamable-http'
+          : 'stdio'
+    const extra: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(c)) {
+      if (!KNOWN_KEYS.has(key)) extra[key] = value
+    }
     return {
       name,
-      command: String(c.command ?? ''),
-      args,
-      env,
-      transport: c.transport === 'streamable-http' ? 'streamable-http' as const : 'stdio' as const,
-      url: String(c.url ?? ''),
+      command,
+      args: Array.isArray(c.args) ? c.args.map(String) : [],
+      env: asStrings(c.env),
+      transport,
+      url,
+      headers: asStrings(c.headers),
       enabled: c.enabled !== false,
+      extra,
     }
   })
 }
@@ -83,7 +135,7 @@ export function McpSection({ load, save, t: t_ }: McpSectionProps) {
     setError(null)
     try {
       const loaded = load?.() ?? []
-      setServers(loaded as McpServer[])
+      setServers((loaded as Partial<McpServer>[]).map(normalizeServer))
     } catch (e) {
       setError(t('loadFailed'))
     } finally {
@@ -187,7 +239,11 @@ export function McpSection({ load, save, t: t_ }: McpSectionProps) {
                 {server.name}
               </div>
               <div className={styles.cardMeta}>
-                <code>{server.command} {server.args.join(' ')}</code>
+                <code>
+                  {server.transport === 'streamable-http'
+                    ? server.url
+                    : `${server.command} ${server.args.join(' ')}`.trim()}
+                </code>
               </div>
             </div>
             <div className={styles.cardActions}>
